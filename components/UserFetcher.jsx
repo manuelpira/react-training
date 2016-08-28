@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
+import Store from '../stores/Store';
+import Actions from '../actions/Actions';
+
 import UserList from './UserList';
 
 class UserFetcher extends React.Component {
@@ -8,26 +11,27 @@ class UserFetcher extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      users: []
-    };
+    this.state = Store.getState();
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
 
-    axios
-      .get('http://localhost:3033/users')
-      .then((response) => {
+    Store.listen(this.onChange);
+    Actions.getUserList();
+  }
 
-        this.setState({
-          users: response.data
-        });
-      });
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(Store.getState());
   }
 
   render() {
     return (
-      <UserList users={this.state.users} />
+      <UserList users={this.state.userList} />
     );
   }
 };
