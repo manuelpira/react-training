@@ -2,23 +2,35 @@ import React from 'react';
 
 import axios from 'axios';
 
+import Actions from '../actions/Actions';
+import Store from '../stores/Store';
+
 import App from './App';
 import GenericInput from './GenericInput';
 import SubmitButton from './SubmitButton';
 import FormAlert from './FormAlert';
 
-const FormNewUser = React.createClass({
-  getInitialState: function()
-  {
-      return ({
-        id: 0,
-        name: 'Default Name',
-        job: 'Default Job',
-        status: null,
-      });
-  },
+class FormNewUser extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = Store.getState();
+    this.onChange = this.onChange.bind(this);
+  }
 
-  render: function() {
+  componentDidMount() {
+
+    Store.listen(this.onChange);
+  }
+
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(Store.getState());
+  }
+
+  render() {
     return (
       <App>
         <FormAlert status={this.state.status}/>
@@ -37,50 +49,25 @@ const FormNewUser = React.createClass({
           onChange={this.handleJob}
           value={this.state.job}
         />
-        <SubmitButton
-          value="Click me and send the form!"
-          onClick={this.handleSubmit}
-        />
+        <SubmitButton value="Click me and send the form!" />
       </App>
       )
-  },
+  }
 
-  handleId: function(event) {
+  handleId(event) {
 
-    const id = event.target.value;
-    this.setState({ id: id });
-  },
+    Actions.setId(event.target.value);
+  }
 
-  handleName: function(event) {
+  handleName(event) {
 
-    const name = event.target.value;
-    this.setState({ name: name });
-  },
+    Actions.setName(event.target.value);
+  }
 
-  handleJob: function(event) {
+  handleJob(event) {
 
-    const job = event.target.value;
-    this.setState({ job: job });
-  },
-
-  handleSubmit: function() {
-
-    const _this = this;
-
-    console.log('FORM STATE BEFORE SAVE', this.state);
-
-    axios
-      .post('http://localhost:3033/users', this.state)
-      .then((response) => {
-
-        _this.setState({
-          id: 0,
-          name: 'Default Name',
-          job: 'Default Job',
-          status: 'data saved'
-        });
-      });
-  } 
-});
+    Actions.setJob(event.target.value);
+  }
+};
 
 export default FormNewUser;

@@ -7,12 +7,26 @@ class Actions {
     this.dispatch();
   }
 
-  submitForm(data) {
-  	console.log('ACTIONS: saving form data action fired');
+  setUsers(data) {
   	this.dispatch(data);
   }
 
-  setUsers(data) {
+  /* form related actions */
+
+  setId(data) {
+  	this.dispatch(data);
+  }
+
+  setName(data) {
+  	this.dispatch(data);
+  }
+
+  setJob(data) {
+  	this.dispatch(data);
+  }
+
+  submitForm(data) {
+  	console.log('ACTIONS: saving form data action fired');
   	this.dispatch(data);
   }
 }
