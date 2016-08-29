@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 
 import Actions from '../actions/Actions';
-import Store from '../stores/Store';
+import FormStore from '../stores/FormStore';
 
 import App from './App';
 import GenericInput from './GenericInput';
@@ -13,21 +13,21 @@ import FormAlert from './FormAlert';
 class FormNewUser extends React.Component {
   constructor(props) {
     super(props)
-    this.state = Store.getState();
+    this.state = FormStore.getState();
     this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
 
-    Store.listen(this.onChange);
+    FormStore.listen(this.onChange);
   }
 
   componentWillUnmount() {
-    Store.unlisten(this.onChange);
+    FormStore.unlisten(this.onChange);
   }
 
   onChange() {
-    this.setState(Store.getState());
+    this.setState(FormStore.getState());
   }
 
   render() {
