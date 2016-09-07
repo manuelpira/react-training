@@ -7,6 +7,7 @@ import FormStore from '../stores/FormStore';
 
 import App from './App';
 import GenericInput from './GenericInput';
+import NameInput from './NameInput';
 import SubmitButton from './SubmitButton';
 import FormAlert from './FormAlert';
 
@@ -39,9 +40,8 @@ class FormNewUser extends React.Component {
           onChange={this.handleId}
           value={this.state.id}
         />
-        <GenericInput
+        <NameInput
           name="name"
-          onChange={this.handleName}
           value={this.state.name}
         />
         <GenericInput
@@ -57,11 +57,6 @@ class FormNewUser extends React.Component {
   handleId(event) {
 
     Actions.setId(event.target.value);
-  }
-
-  handleName(event) {
-
-    Actions.setName(event.target.value);
   }
 
   handleJob(event) {
