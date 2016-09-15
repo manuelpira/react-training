@@ -44,6 +44,35 @@ app.post('/users', function(req, res) {
   console.log('Data received for saving', req.body);
 });
 
+app.delete('/users/:id', function(req, res) {
+
+  console.log('Deleting:', req.params.id);
+
+  jsonfile.readFile('./data.json', function(err, obj) {
+
+    var index = null;
+    for (var i = 0; i < obj.length; i++) {
+
+      if (obj[i].id == req.params.id) {
+        index = i;
+      }
+    }
+
+    if (index) {
+
+      obj.splice(index, 1);
+
+      jsonfile.writeFile('./data.json', obj, function (err) {
+        console.log('Deleted! ');
+      });
+    }
+
+    res.json({
+      deleting: req.params.id,
+    });
+  });
+});
+
 app.listen(3033, function() {
 
   console.log("React Training Backend running on http://localhost:3033" );
